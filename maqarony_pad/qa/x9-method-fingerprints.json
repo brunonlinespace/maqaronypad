@@ -1,0 +1,14 @@
+{
+  "baseline": "1.0.0-x8.1",
+  "relocated": {
+    "program_dir": "d87e4166fc97b771c05e7c28b1e841536d294c376d1078dc724790d894ad4595",
+    "project_root": "97546208758728838256968c7e86d61b06c5cd1daf7831835cb96ad7c8be74b3",
+    "asset_path": "29e21dcb856bed6cfbcf5bf314afd84b070365e59ca781b681607f97604c5e25",
+    "application_icon": "1c59ada05bd6cdc32d65c7550278d34483d438208a73809bdd111deae6b67711",
+    "host_process_environment": "7534c6ecb0fce4c1771d0a92d200a85038e12fcf9dcc3da07901b5e0acc7e8a8",
+    "parse_args": "2438ec63ba79e15966bd5d2f1ed3ec7bd754258a499c2b2af7349f0edc393e82",
+    "main": "b3498b25d7ebb80903e6c778ce7dba0de8db95526224c58b4456b5601f59d3ff"
+  },
+  "host_window_methods_preserved": 75,
+  "smoke_metadata_only_sha256": "549c2df231cf2ddb8769479d7acae9fd93d9830e9a48867d8d108edc53b14148"
+}

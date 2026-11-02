@@ -1,0 +1,152 @@
+{
+  "allow_changes": {
+    "app.py": [
+      "MaqaronyPadWindow._create_central_ui",
+      "smoke_test"
+    ],
+    "widgets/editor_commands_appearance.py": [
+      "EditorCommandsAppearanceMixin.toggle_editor_canvas_light",
+      "EditorCommandsAppearanceMixin.set_theme"
+    ],
+    "widgets/mwpyn/editor_lifecycle.py": [
+      "EditorLifecycleMixin.handle_backing_path_event",
+      "EditorLifecycleMixin.open_path",
+      "EditorLifecycleMixin.save_as",
+      "EditorLifecycleMixin.save_version_as",
+      "EditorLifecycleMixin.open_containing_folder",
+      "EditorLifecycleMixin.open_external_editor"
+    ],
+    "widgets/mwpyn/editor_preview.py": [
+      "MarkdownPreview._on_anchor_clicked"
+    ],
+    "widgets/mwpyn/editor_printing.py": [
+      "EditorPrintingMixin.export_pdf"
+    ]
+  },
+  "baseline": "MaqaronyPad 1.0.0-x14.1",
+  "unchanged_methods": {
+    "app.py": {
+      "EditorMessageStatusBar.__init__": "4473b402c4f2ade8d637583811f95e552fcd01554b0b30328026bca0e33168c7",
+      "EditorMessageStatusBar.clearMessage": "9f791257ca2b092e267f994129c13e320758c7c87cd516407375deecf511eda0",
+      "EditorMessageStatusBar.showMessage": "65207d82a8c6b8421b7e28a735126a94def4e96cb213a03e0430442fd118a9c5",
+      "FindPanel.__init__": "262ef3f7a87c4b8fecc095eafb1f27960d258ca080cdf99bced253cb5056c45e",
+      "MaqaronyPadWindow.__init__": "bf2cdb7d3f6dfe6ef20112a6baf2d7d6c9e8222d9bbfaf9c7c6f796072d5aa92",
+      "MaqaronyPadWindow._apply_presentation_safely": "76ec2d1e338779b9cb6000b0f87f0f2fb12e76dfafa1a1379583ac5949de3e8a",
+      "MaqaronyPadWindow._apply_preview_link_color": "33ec51c519401d8f269ebbc18b2bfd60ef2a1ea271656ca4e80957a30236fe19",
+      "MaqaronyPadWindow._apply_preview_quote_effect": "2f0fa157230a7a7cafc4ce6bfaa2b5e05db138983bbf8422dc1b452014f80187",
+      "MaqaronyPadWindow._copy_active_text_surface": "372f633780eb7999c97c94598ba9ce297a4ff3b06ac6282677aafb72d27350fe",
+      "MaqaronyPadWindow._create_status_bar": "c1796cb9cd8f85e36e4b5f883d3f17c05cd040d9ef4e84bc015e501289f0c47a",
+      "MaqaronyPadWindow._handle_dropped_files": "c09e03e5555ea35b430629d76c2041b4eac50c1e248e0d9046554b69da514db9",
+      "MaqaronyPadWindow._insert_curated_symbol": "ffc08e1af4607c25024a18dce2cf46e7e081c2754a9f24126541b7065ec7a4e6",
+      "MaqaronyPadWindow._link_at_cursor": "24fd7c072358e2c7c9a7548f93b3a7174e3587792c5cfb363fc4abee3b3e3336",
+      "MaqaronyPadWindow._on_editor_overwrite_mode_changed": "75a349d848b590b5dcba984f956fdc7e16f76b2aa6c233d796289d13662ffd6a",
+      "MaqaronyPadWindow._on_text_changed": "44f76118ee053c42cae34cacff766948565c7bc9cbeba509ec71f6053a237cd1",
+      "MaqaronyPadWindow._open_more_symbols": "2ec18ec90ef1d53dbb95f33cee2fb7eb40ec24f33d83a105e2d307d2823a2063",
+      "MaqaronyPadWindow._preview_is_active_text_surface": "1555a90f6beb40c76d2542771ab487f5dd67dbd36dfe54dc7dab8c9695365e42",
+      "MaqaronyPadWindow._reset_content_splitter": "50318b5481c8398acc8c80ebdc23dc9004f80dea31bf1e6c1b12ac05be75cce3",
+      "MaqaronyPadWindow._select_all_active_text_surface": "5fadf0004d906dd966def60539beef9157c45d402a4a8d6027fab3c2024eb2df",
+      "MaqaronyPadWindow.closeEvent": "5d0a262d4558bd5d91f7ad7fc03c085ff8bddc5063854af91a46f9e181b723b7",
+      "MaqaronyPadWindow.delete_current_line": "6c952bbb0a336ec21e6e6b30b159a5bebe13da78a86844d020658faf9dd56c68",
+      "MaqaronyPadWindow.delete_selection": "f4f429927e1a140bd45ccfd2c4efe33b205f1bdc365be7f1ea23e377a3b0fe60",
+      "MaqaronyPadWindow.dragEnterEvent": "e8728d04a99bd0d08875a77e39043b66830c6964c53f12ba462ab4c28561f01c",
+      "MaqaronyPadWindow.dropEvent": "75f2cce024985a842c4b6c1451b824454d1331a9945941b3f80208d5fe9ad7c0",
+      "MaqaronyPadWindow.edit_link": "5450d96a9496475bdcf0f56871d4b5e127f4ff49ad319b5bbade500afcb4abc3",
+      "MaqaronyPadWindow.eventFilter": "23594b7c8937568f4c9ae3179d4e51858fe5612ec9288a6e287a227e65834412",
+      "MaqaronyPadWindow.goto_line": "fb7e3acc537edd258d96ef9294afd2882b24617ac5d90a3c6787247e2697b21a",
+      "MaqaronyPadWindow.insert_code_block": "258a11e4b81e2c363ef3f897bae438c567a6efa3a9f3292b3525a6dbbe16e938",
+      "MaqaronyPadWindow.insert_image": "a50bc7782566abee334c95759fd7ffebb5e68b3e378133f85703246ccccee6c0",
+      "MaqaronyPadWindow.insert_link": "f3f0239ee08c2bfa9dc62886da0e333f4d810ca14f603d62f0aa3010052f5b10",
+      "MaqaronyPadWindow.insert_symbol": "d90d0d9019ed421b0994ca8fb2416a8e42b43c60abe6d7e053fdc9c6bca4ac19",
+      "MaqaronyPadWindow.insert_table": "0fce757704edbce6273e0b4ccb531b66b92b8e9e217c788fb8c5401f36881c82",
+      "MaqaronyPadWindow.insert_text": "53cf478a437c5cd8b0ef124637e5c58135d1d9f9a178b4bff37d94c90db152a8",
+      "MaqaronyPadWindow.new_window": "fc2ad4816a52f70e09558c2ff3f5ba99200e7b01a52c57cdecdbccf6934643d6",
+      "MaqaronyPadWindow.new_window_with_file": "aac528d8857f9016eb040a739384289c78722d01704049f80491894a89cfc985",
+      "MaqaronyPadWindow.open_github_repository": "b3d37df5330855b9ea6251a3c72940d1e8734a1807c674f9b1bc9ca74ad02209",
+      "MaqaronyPadWindow.paste": "473a98027320e162de4b2099c673132097ac37af101e4aebf32c31da03ae8d12",
+      "MaqaronyPadWindow.refresh_preview_now": "a7c8241ac973dc3ac56f46d16bdbf701f4a0b64c971753359232f9c66ed62ac1",
+      "MaqaronyPadWindow.remove_link": "547400d1d78705c1d2f483ae1d05c8b36a48237df71ead14c99ec589eb47610c",
+      "MaqaronyPadWindow.report_an_issue": "c6275b5a508fe7397e08976fcc1d467162d5846dc42b2ec7bf2bba4714ce064c",
+      "MaqaronyPadWindow.schedule_preview": "ad7c992cb4164247aa8a5893e4e8c67a03202c72ea7d541dd1be346727ce44a7",
+      "MaqaronyPadWindow.show_documentation": "56a1cb76ca6661fe958889032ce2cca06e5642c978f12d16901275b09b05d968",
+      "MaqaronyPadWindow.toggle_fullscreen": "0432d06a8b5f2505a8e68e844ccacd73e3b104339eb7de19fbea62e7866343ef",
+      "MaqaronyPadWindow.toggle_locked_mode": "8fe0ab7a1b1e50f16c85eef08ca4491d058b7fd1dcf3367a2582a7f82475f671",
+      "MaqaronyPadWindow.toggle_status_bar": "b517428a94d2340592e9eaa2cf0c6696db62260f43f8c6c037da4966eb1d0d13",
+      "MaqaronyPadWindow.update_status": "b04fa535bc5fca5509bd329ccfe169a74b6d94028be3759e1b00fe98f53c31de",
+      "apply_theme": "a0dfc6177d6201205b5bf7ed264a102d9855e0f7868fe4e49f40a86f634c89de",
+      "dialog_title": "ddeeaa071c4e81cc0b1ac8312db4c0dd25830801333b92e8ebc6b22d9a510981",
+      "load_json_settings": "e9aa032c028ebb5d62657efb2903c2ff84006b42538570b6db49c34965bf51c2",
+      "save_json_settings": "457eda0ba5474e5b3ebe020b67944e34279a45f7de0294fffd34a56f46c8d2c5"
+    },
+    "widgets/editor_commands_appearance.py": {
+      "EditorCommandsAppearanceMixin._action": "e778d2d6fe9b0e513bc92e27da7f5240bed55248e2cb3ed289709c5f1cf0c2ee",
+      "EditorCommandsAppearanceMixin._apply_editor_appearance": "f243601c59e7446af1a75666d3fa18b0c19340233a4afa55e3bd7e4c4d2d36b2",
+      "EditorCommandsAppearanceMixin._apply_editor_canvas_theme": "27522509f39f4cf7c7378cfcb415ff80f463e002e4e53b42258bc4912e7c6153",
+      "EditorCommandsAppearanceMixin._apply_preview_font": "d866ecd4bc6f38805d09efaf920ac65bbea6329bc4a2ea60eb4e41e4367aecf0",
+      "EditorCommandsAppearanceMixin._create_actions": "188408d48a0b8a2d807268e2f0336b52f6acc8ffa1b2d089405d63d818d70c01",
+      "EditorCommandsAppearanceMixin._create_menus": "6597b01cc4ab5961338b10bfc530558ce53cdd5603f6fea8f5060b5a96ad47f7",
+      "EditorCommandsAppearanceMixin._effective_scheme": "2291ca744990af8a4d5e1dfe4a95c0c478d417cdbcee7bdc23793a1368cf3a6a",
+      "EditorCommandsAppearanceMixin._preview_base_font": "41dace75c4037e4676731f1a06166ad34ed1570fc240d25e8feb26054748ff85",
+      "EditorCommandsAppearanceMixin._refresh_action_icons": "b35cdb207075e3d11d805d52cb7d3d8664aafae751b398d976ad2b092770bd6f",
+      "EditorCommandsAppearanceMixin._sync_undo_redo_state": "01b1ab69c1c465b7fd4403f8b6834b6038d07a80b608c58be64f899ea292cbee",
+      "EditorCommandsAppearanceMixin._update_ui_state": "0e76a89c32f8ef34a283c22826af88dfdcc5d86308b83ed6b518eb7c09306a83",
+      "EditorCommandsAppearanceMixin.choose_display_font": "4b00e6d22cbfff033562f8efe5d53a488604f93191d7a9d18db2f37500bca3d1",
+      "EditorCommandsAppearanceMixin.choose_editor_font": "9a931e8146d87e2556b2f34ae839d33751ef0d05952bd3f4ee6e1877969bd6c5",
+      "EditorCommandsAppearanceMixin.choose_tab_width": "f4d6a9d012aba109b658255c2e26da616841484c384c08a7e6352dc0e618213d"
+    },
+    "widgets/mwpyn/editor_lifecycle.py": {
+      "EditorLifecycleMixin._bind_document_watcher": "e8e01318d3be7bbb8f6f5cbe6a5c9491d34748f9b0f1c3249b48fde2fbcf0246",
+      "EditorLifecycleMixin._choose_source_encoding": "2a126a3fda8c46ca8315b68e85380acd1623a1fa2aa381aea82151ed30708093",
+      "EditorLifecycleMixin._clear_document_watcher": "fae282b656b04187188420eed853e9da6684c12684f5635685499957beb78dd5",
+      "EditorLifecycleMixin._confirm_close_missing_backing": "4d6a34eec890b34c73f8bcd8d5aee2a031fc410a6507a83e566c4c91c7653d1a",
+      "EditorLifecycleMixin._current_disk_snapshot": "ec023edd10322ff3e3ad04a8969a509355a5799b5c18d24f418cf69e5a311bd0",
+      "EditorLifecycleMixin._external_change_action": "a670b0391634b989f7e89539afa2f41b64a11ea0ed5509c1a9e6e8c2c6f9a85c",
+      "EditorLifecycleMixin._file_policy": "9dc16f58ffe13d5d6c90b59b72d1b35be80192458315425accdb05d60d49783f",
+      "EditorLifecycleMixin._has_external_change": "b4aa2c7a325a318f26a3140926d24023db1cd8b8b0813dbcbd8ae7cb8a26bdd6",
+      "EditorLifecycleMixin._prepare_file_operation": "9647f0f563e4e91018a4f86e3ee8c928498943318f98e722561e6457f9731f2c",
+      "EditorLifecycleMixin._queue_backing_check": "750b826eb85b31df8e0c0f4f26c0953bd860c39941558d093547c64aba21ff51",
+      "EditorLifecycleMixin._safe_save_current_to": "829c5c582f8ce212c278dffa7867cf1901abfd8599d13d26368024c9b04f5fe1",
+      "EditorLifecycleMixin._save_as_target": "641e535e4df5d2cf4ca4a2b82a810387dfac2ac9238df6347d019e9fac142052",
+      "EditorLifecycleMixin._set_backing_state": "f161b29a5eb2c90e51d055f678e73b5ec25839d82fccd575131080e31df8c89d",
+      "EditorLifecycleMixin._set_file_policy": "ca6b88ae6d784c13fe79be69fdf51da236c04c65177fe1cc86b254a6d764d5ac",
+      "EditorLifecycleMixin.delete_file": "0f4fcbf875d70bc26710d0e4a9027223650ae55b7eb19ca778e880d5d6317751",
+      "EditorLifecycleMixin.duplicate_file": "a3db45b4659241067becec95a712c1fd5495e88cbb1dbc4cef0c680eaaa27386",
+      "EditorLifecycleMixin.maybe_save": "9b666c2a4d7c71797d262b80811c800bca625ad2ec33cd798d4259bdbba0fba9",
+      "EditorLifecycleMixin.new_document": "53d21d776aec6ad596adcc0fb8f3f0a75f1ee9f9e3e8be46fc77ad299d387ce3",
+      "EditorLifecycleMixin.open_dialog": "75196237b19ac99e7be4e3b70c4cb4e8a1a6902ab69d49f748514e49ccbbc360",
+      "EditorLifecycleMixin.reload_external_change": "9c20b53251c0870603ec21be40fe1f629b63844177ebdbdc3fe731a13c2580e8",
+      "EditorLifecycleMixin.rename_file": "c3b8c63b90e256f0bf8382c9b90d8aa7d3afe7a6feefe8d415774abb52cfd897",
+      "EditorLifecycleMixin.save_and_exit": "3f5b451ef2fe24897b94f742e54f2a8ae192c851204f41c435ed43b9713aa633",
+      "EditorLifecycleMixin.save_document": "274cd1c6afd4183933b5dee7f518da0dbe069bc81f82095af5fdb9a51ffd86d8"
+    },
+    "widgets/mwpyn/editor_preview.py": {
+      "MarkdownPreview.__init__": "c677c90e7e1a342ebcfd98581e07eeae4c7ae16b17ff7d1be895ba125a86fc6f",
+      "MarkdownPreview.loadResource": "7c53adc84e5c1756f2f6f0b938b8bba9e4d17748e23eff194c82826620d9bebc",
+      "MarkdownPreview.render_markdown": "14820f048ba183ac7b533a7d8b96cad2e36991115c6181ccb8e4ee3038ea096b",
+      "MarkdownPreview.set_document_path": "f911501fe794ef1d61694591f5c84da712ef554f2d35ab9075f60fe24bfa3c5b"
+    },
+    "widgets/mwpyn/editor_printing.py": {
+      "EditorPrintingMixin._printable_document": "b358d451504f4c1ece255f2f473b5fbde1cf454275b3f332ad69f3439ca5bdd1",
+      "EditorPrintingMixin.print_document": "b9c3d6db6be85686f8c48b0422bab5a48d9a5b38ec247964c9d025b854f1d9fb",
+      "EditorPrintingMixin.show_properties": "fe08d2e52125e17edd9a63840a694710f0eb31f897c7640a486cbd0d3af2230d"
+    }
+  },
+  "untouched_production_files": {
+    "document_io.py": "61cfa48d5e550d86820660ffeaee6b93a4a7325a89daae831c39bb16c7d87336",
+    "editor_platform_startup.py": "fbcfd7eb213304c1fe73c6557cc8a4290f4094f90a5e537822a44df5799a0fce",
+    "legacy_ricopad.py": "946d438f7d54b7499bcd6e1ad4d4f2173a8aca3ab44fd49cc2768d2acd5b981d",
+    "settings_io.py": "f0f1e931dfcecd6db3347dcfdec7d557594d14e0cfb80e1200e7d43f73269e13",
+    "widgets/__init__.py": "95a6058672869093ff75bd18d0643ec04fbb6e08dcbb2c2aa3c6d748ec414d45",
+    "widgets/about_dialog.py": "d96a2937efe930fa0670b1f93fe43a2fbe53aec8a88d49a3173d870c04da8f56",
+    "widgets/editor_ribbon_retro.py": "67b206a8ae417622afd13db2d3b519dd702e06aa98b3f869fdc7e2ae1827136f",
+    "widgets/keyboard_shortcuts.py": "97e6c57e4d98f791073b2a74785733b7b82d9db95df132b777f6feb0a3e3b43f",
+    "widgets/mwpyn/__init__.py": "95a6058672869093ff75bd18d0643ec04fbb6e08dcbb2c2aa3c6d748ec414d45",
+    "widgets/mwpyn/editor_formatting.py": "2b910071810097c1eaead8be177eb9a6603ea3305acd90b409ab1253bad7e90a",
+    "widgets/mwpyn/editor_insertion.py": "2a3cc8c14611732f7fa63cf6fe06a7c949eedb8338b44e5f9ad5d3c67b3c1c3d",
+    "widgets/mwpyn/editor_preferences.py": "231f5d84b44ed325203edc327c0fa1a11475e6eff5986290f56db23c54fe7656",
+    "widgets/mwpyn/editor_search_view.py": "1ae895bc4710d8c4122189bdffdc680a0c484e97248ab7401241d8bbc6e8dca9",
+    "widgets/mwpyn/editor_source.py": "004d0ff29501ad6cbc7a011457e09d9c76cc32f10200c904ef6ceea7c12a72ef",
+    "widgets/mwpyn/editor_widgets.py": "df8813b44df453d9cbe00b4b3aed8ed03095eaec3370e55af9a26df4b60561a7",
+    "widgets/quick_tour.py": "9a6d73ea990941d52a04366aa04f87b301e920e1b34fd1c44c5975480a69eb23",
+    "widgets/window_search_view.py": "e5c9701a8833948b4f36d65c10a0f5a0552b03583845d6e03e180cc96c1b772f"
+  }
+}

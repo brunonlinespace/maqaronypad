@@ -1,0 +1,45 @@
+{
+  "baseline": "1.0.0-x12.2",
+  "moved_definitions": {
+    "widgets/editor_commands_appearance.py": {
+      "EditorCommandsAppearanceMixin": "f791b556d22f56b1c544a5854c21532cdc53bfa6955ba79d81be9f42e5746c3b"
+    },
+    "widgets/editor_ribbon_retro.py": {
+      "EditorRibbonRetroMixin": "e08d26a1961380b7a43d2fd6574473ce75376e61000bd3604bc6af187025c375"
+    },
+    "widgets/mwpyn/editor_formatting.py": {
+      "EditorFormattingMixin": "5688b50a153cff60ddbc7230bec4d5955ed3f476706e69e56a8e55f765d46b98"
+    },
+    "widgets/mwpyn/editor_insertion.py": {
+      "EditorInsertionMixin": "921a00721eaab98921231f7c7fa4c5995f0994a31ed7b28eee36f35734e1cb8a"
+    },
+    "widgets/mwpyn/editor_lifecycle.py": {
+      "EditorLifecycleMixin": "d389650c45348c3eca69a4e4f27ae343b8dcc870c5c2bc39f123c937240c3101"
+    },
+    "widgets/mwpyn/editor_preferences.py": {
+      "EditorPreferencesMixin": "784f4588a6a7e7218face5a673099b66b69214b3581896cc419d1da0ac0a9158"
+    },
+    "widgets/mwpyn/editor_preview.py": {
+      "MarkdownPreview": "dc0e4f7194cf5a3de04e0001775e096fcf7f4aa0fd9a2181a9323f3a3d7afe68"
+    },
+    "widgets/mwpyn/editor_printing.py": {
+      "EditorPrintingMixin": "bed32963cf9bff011d7941b47096997ea26d39dce52680478af075293fa26f2f"
+    },
+    "widgets/mwpyn/editor_search_view.py": {
+      "EditorSearchViewMixin": "e33988c3ad6f92a052579b3c05bd8c9d91ff532f72b60d4dadf62f5f10d29163"
+    },
+    "widgets/mwpyn/editor_source.py": {
+      "MarkopadSourceEditor": "23cef519a048cd736688a931e3dcd4459e113d058339ce497202511f31c184c2"
+    },
+    "widgets/mwpyn/editor_widgets.py": {
+      "HighlightRule": "dbeddd2f65e3db1dca391d2b31fb893e890b5f3e709b583ccac1e2761f38c144",
+      "LineNumberArea": "09b59813343723dd38885f8cc990119623c1120d16b831d35b1feedd8ace756e",
+      "MarkdownHighlighter": "a9c87ef66b26c2d44eaf0813abc0fa304eebd32422dd5f797423c11620db165f",
+      "_scheme": "a05b8d96dc89e9a7ee222fe6ed34d5ca7c9b87d195480798038e7307db18b357"
+    },
+    "widgets/window_search_view.py": {
+      "WindowSearchViewMixin": "12c3ffe64100380451d35202f3e35a0fe311330fa4009fce0550479056eed471"
+    }
+  },
+  "version": "1.0.0-x12.3"
+}
