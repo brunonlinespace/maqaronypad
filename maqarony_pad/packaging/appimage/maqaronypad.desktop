@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=MaqaronyPad
+GenericName=Markdown Editor
+Comment=Focused, source-faithful Markdown editor
+Exec=maqaronypad %F
+Icon=maqaronypad
+Terminal=false
+Categories=Office;TextEditor;Utility;
+MimeType=text/markdown;
+StartupNotify=true
+StartupWMClass=MaqaronyPad

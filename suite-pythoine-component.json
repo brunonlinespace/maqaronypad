@@ -1,0 +1,27 @@
+{
+  "id": "maqaronypad",
+  "name": "MaqaronyPad",
+  "description": "A focused Markdown editor.",
+  "component_kind": "editor",
+  "extensions": [
+    ".md",
+    ".markdown",
+    ".mdown",
+    ".mkd"
+  ],
+  "portable_command": [
+    "main.py"
+  ],
+  "icon": "maqarony_pad/assets/icons/maqaronypad.png",
+  "version": "1.0.2",
+  "publisher": "brunonlinespace",
+  "repository": "https://github.com/brunonlinespace/maqaronypad",
+  "desktop_id": "maqaronypad",
+  "tagline": "Friendly. Fast. Focused.",
+  "publisher_id": "brunonlinespace",
+  "capabilities": {
+    "routing": true,
+    "open": true,
+    "create": true
+  }
+}

@@ -1,0 +1,3 @@
+MaqaronyPad 1.0.2
+Friendly. Fast. Focused.
+GPLv3-or-later

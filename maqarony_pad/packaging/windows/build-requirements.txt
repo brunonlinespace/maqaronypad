@@ -1,0 +1,3 @@
+pyinstaller>=6.14,<7
+setuptools>=75
+wheel>=0.45

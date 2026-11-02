@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.brunonlinespace.maqaronypad</id>
+  <name>MaqaronyPad</name>
+  <summary>Focused, source-faithful Markdown editor</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer id="io.github.brunonlinespace">
+    <name>Bruno Machado</name>
+  </developer>
+  <url type="homepage">https://github.com/brunonlinespace/maqaronypad</url>
+  <url type="bugtracker">https://github.com/brunonlinespace/maqaronypad/issues</url>
+  <description>
+    <p>MaqaronyPad edits ordinary Markdown directly with Markdown-native commands and a safe read-only split preview.</p>
+  </description>
+  <launchable type="desktop-id">maqaronypad.desktop</launchable>
+  <provides><mediatype>text/markdown</mediatype></provides>
+  <releases>
+    <release version="1.0.2" date="2026-11-01"><description><p>Correct the final AppImage smoke test version assertion and enforce a runtime-version parity regression; editor behavior unchanged.</p></description></release>
+    <release version="1.0.1" date="2026-11-01"><description><p>Correct final-release AppStream metadata ordering and enforce strict metadata validation before freezing; application functionality unchanged.</p></description></release>
+    <release version="1.0.0" date="2026-11-01"><description><p>Promote validated 1.0.0-x17.10 source to final 1.0.0 without application behavior changes.</p></description></release>
+    <release version="0.3.4" date="2026-10-16"/>
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>
