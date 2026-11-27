@@ -18,9 +18,11 @@ class EditorRibbonRetroMixin:
     def _show_toolbar_context_menu(self, global_pos) -> None:
         menu = QMenu(self)
         menu.addAction(self.tabbed_mode_action)
-        menu.addAction(self.classic_mode_action)
         menu.addSeparator()
+        menu.addAction(self.classic_mode_action)
         menu.addAction(self.customize_classic_action)
+        menu.addSeparator()
+        menu.addAction(self.appmenu_only_mode_action)
         menu.exec(global_pos)
 
     def _enable_toolbar_context_menu(self, widget: QWidget) -> None:
@@ -268,17 +270,23 @@ class EditorRibbonRetroMixin:
         self.rebuild_classic_toolbar()
 
     def rebuild_classic_toolbar(self) -> None:
-        self.classic_toolbar.clear(); selected = set(self.classic_toolbar_items); last_group = None
+        self.classic_toolbar.clear(); selected = set(self.classic_toolbar_items); last_group = None; added = False
         for group, item_id, _label, action in self._classic_toolbar_catalog():
             if item_id not in selected:
                 continue
             if last_group is not None and group != last_group:
                 self.classic_toolbar.addSeparator()
-            self.classic_toolbar.addAction(action); last_group = group
+            self.classic_toolbar.addAction(action); last_group = group; added = True
+        # Classic Settings is deliberately persistent/non-removable. Clearing the
+        # optional inventory therefore never makes Classic an unusable empty bar;
+        # users who want no toolbar choose Disabled (AppMenu only).
+        if added:
+            self.classic_toolbar.addSeparator()
+        self.classic_toolbar.addAction(self.customize_classic_action)
         self._apply_toolbar_button_style()
 
     def show_classic_toolbar_dialog(self) -> None:
-        dialog = QDialog(self); dialog.setWindowTitle(dialog_title("Customise Classic Bar")); dialog.setWindowIcon(self.windowIcon()); dialog.resize(560, 620)
+        dialog = QDialog(self); dialog.setWindowTitle(dialog_title("Classic Settings")); dialog.setWindowIcon(self.windowIcon()); dialog.resize(560, 620)
         outer = QVBoxLayout(dialog)
         intro = QLabel("Tick the controls you want on the Classic toolbar. All commands remain available from the application menus regardless of toolbar selection.", dialog)
         intro.setWordWrap(True); outer.addWidget(intro)
@@ -289,15 +297,18 @@ class EditorRibbonRetroMixin:
                 box = QGroupBox(group, body); group_layout = QVBoxLayout(box); body_layout.addWidget(box); current_group = group
             check = QCheckBox(label, body); check.setChecked(item_id in self.classic_toolbar_items); group_layout.addWidget(check); checks[item_id] = check
         body_layout.addStretch(1); scroll.setWidget(body); outer.addWidget(scroll, 1)
-        controls = QHBoxLayout(); default_button = QPushButton("Default", dialog); controls.addWidget(default_button); controls.addStretch(1)
+        controls = QHBoxLayout(); clear_button = QPushButton("Clear All", dialog); default_button = QPushButton("Default", dialog)
+        controls.addWidget(clear_button); controls.addWidget(default_button); controls.addStretch(1)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel, parent=dialog); controls.addWidget(buttons); outer.addLayout(controls)
+        def clear_all() -> None:
+            for check in checks.values(): check.setChecked(False)
         def restore_default() -> None:
             defaults = set(CLASSIC_TOOLBAR_DEFAULT)
             for item_id, check in checks.items(): check.setChecked(item_id in defaults)
         def save_selection() -> None:
             self.classic_toolbar_items = [item_id for _group, item_id, _label, _action in self._classic_toolbar_catalog() if checks[item_id].isChecked()]
             self.rebuild_classic_toolbar(); self.persist_preferences(); dialog.accept()
-        default_button.clicked.connect(restore_default); buttons.accepted.connect(save_selection); buttons.rejected.connect(dialog.reject); dialog.exec()
+        clear_button.clicked.connect(clear_all); default_button.clicked.connect(restore_default); buttons.accepted.connect(save_selection); buttons.rejected.connect(dialog.reject); dialog.exec()
 
     def cycle_tabbed_tab(self, step: int) -> None:
         """Move to the next/previous Tabbed toolbar page when Tabbed is active."""
@@ -327,16 +338,23 @@ class EditorRibbonRetroMixin:
 
     def set_toolbar_mode(self, mode: str) -> None:
         mode = {"ribbon": "tabbed", "retro": "classic"}.get(mode, mode)
-        if mode not in {"tabbed", "classic"}: return
+        if mode not in {"tabbed", "classic", "appmenu_only"}: return
         self.toolbar_mode = mode
         self._apply_toolbar_mode(); self.persist_preferences()
 
     def _apply_toolbar_mode(self) -> None:
         tabbed = self.toolbar_mode == "tabbed"
+        classic = self.toolbar_mode == "classic"
+        appmenu_only = self.toolbar_mode == "appmenu_only"
         self.tabbed_container.setVisible(tabbed)
-        self.classic_toolbar.setVisible(not tabbed)
-        self.menuBar().setVisible(True)
-        self.tabbed_mode_action.setChecked(tabbed); self.classic_mode_action.setChecked(not tabbed)
+        self.classic_toolbar.setVisible(classic)
+        # Nuxpad authority: Modern hides only the local AppMenu while keeping the
+        # same live menu objects for compatible desktop global-menu export. Classic
+        # and Disabled (AppMenu only) keep the local AppMenu visible.
+        self.menuBar().setVisible(classic or appmenu_only)
+        self.tabbed_mode_action.setChecked(tabbed)
+        self.classic_mode_action.setChecked(classic)
+        self.appmenu_only_mode_action.setChecked(appmenu_only)
         self._sync_compact_toolbar_toggles()
 
     def set_drop_open_mode(self, mode: str) -> None:

@@ -127,6 +127,7 @@ class EditorCommandsAppearanceMixin:
 
         self.tabbed_mode_action = self._action("Modern (default)", lambda: self.set_toolbar_mode("tabbed"), checkable=True)
         self.classic_mode_action = self._action("Classic", lambda: self.set_toolbar_mode("classic"), checkable=True)
+        self.appmenu_only_mode_action = self._action("Disabled (AppMenu only)", lambda: self.set_toolbar_mode("appmenu_only"), checkable=True)
         # Shortcut-only mode switch: the old binary toolbar button remains removed,
         # but Ctrl+Alt+Shift+T continues to flip Modern/Classic globally.
         self.toolbar_mode_shortcut_action = self._action(
@@ -137,8 +138,8 @@ class EditorCommandsAppearanceMixin:
         self.previous_tabbed_tab_action = self._action("Previous Tabbed Tab", lambda: self.cycle_tabbed_tab(-1), "Ctrl+Shift+Tab")
         self.addAction(self.next_tabbed_tab_action); self.addAction(self.previous_tabbed_tab_action)
         toolbar_group = QActionGroup(self); toolbar_group.setExclusive(True)
-        toolbar_group.addAction(self.tabbed_mode_action); toolbar_group.addAction(self.classic_mode_action)
-        self.customize_classic_action = self._action("Customise Classic Bar…", self.show_classic_toolbar_dialog)
+        toolbar_group.addAction(self.tabbed_mode_action); toolbar_group.addAction(self.classic_mode_action); toolbar_group.addAction(self.appmenu_only_mode_action)
+        self.customize_classic_action = self._action("Classic Settings...", self.show_classic_toolbar_dialog)
 
         self.drop_active_action = self._action(
             "Opens on Active Window", lambda: self.set_drop_open_mode("active_window"),
@@ -266,7 +267,7 @@ class EditorCommandsAppearanceMixin:
             "status_bar_action":"status-bar", "fullscreen_action":"full-screen", "zoom_in_action":"zoom-in", "zoom_out_action":"zoom-out", "zoom_reset_action":"zoom-reset",
             "editor_layout_menu_action":"layout-markdown", "editor_toolbar_menu_action":"layout-ribbon",
             "drop_active_action":"drop-active", "drop_new_window_action":"drop-new-window",
-            "tabbed_mode_action":"toolbar-tabbed", "classic_mode_action":"toolbar-classic",
+            "tabbed_mode_action":"toolbar-tabbed", "classic_mode_action":"toolbar-classic", "customize_classic_action":"toolbar-classic",
             "editor_canvas_theme_action":"editor-canvas", "display_font_action":"font-dialog", "editor_font_action":"default-font",
             "heading_tabbed_action":"heading-group", "heading_menu_action":"heading-group", "code_tabbed_action":"code-group", "link_menu_action":"link-group",
             "app_icons_menu_action":"app-icons", "icon_harmony_action":"icons-new",
@@ -287,9 +288,8 @@ class EditorCommandsAppearanceMixin:
             path = asset_path(self._icon_family_directory(), scheme, f"heading-{level}.png")
             if path.is_file():
                 action.setIcon(QIcon(str(path)))
-        # Modern/Classic radio actions retain their dedicated icons in the
-        # AppMenu and toolbar flyout; only the customisation entry is text-only.
-        self.customize_classic_action.setIcon(QIcon())
+        # Classic Settings is also the persistent recovery control on Classic.
+        # Reuse the existing Classic icon rather than adding new artwork.
         self._sync_compact_toolbar_toggles()
         if hasattr(self, "tabbed_buttons"):
             self._apply_toolbar_button_style()
@@ -378,8 +378,12 @@ class EditorCommandsAppearanceMixin:
         layout.addAction(self.source_only_action); layout.addAction(self.split_action); layout.addAction(self.preview_only_action)
         self.editor_layout_menu_action = layout.menuAction()
         self.toolbar_menu = view.addMenu("Editor Toolbar")
-        self.toolbar_menu.addAction(self.tabbed_mode_action); self.toolbar_menu.addAction(self.classic_mode_action)
-        self.toolbar_menu.addSeparator(); self.toolbar_menu.addAction(self.customize_classic_action)
+        self.toolbar_menu.addAction(self.tabbed_mode_action)
+        self.toolbar_menu.addSeparator()
+        self.toolbar_menu.addAction(self.classic_mode_action)
+        self.toolbar_menu.addAction(self.customize_classic_action)
+        self.toolbar_menu.addSeparator()
+        self.toolbar_menu.addAction(self.appmenu_only_mode_action)
         self.editor_toolbar_menu_action = self.toolbar_menu.menuAction()
         view.addSeparator()
         zoom = view.addMenu("Editor Zoom")
@@ -496,10 +500,16 @@ class EditorCommandsAppearanceMixin:
 
     def _preview_base_font(self) -> QFont:
         font = QFont(QApplication.font()); stored = self.settings.get("preview_font")
+        loaded_stored_font = False
         if isinstance(stored, str) and stored:
             candidate = QFont()
-            if candidate.fromString(stored): font = candidate
-        if font.pointSizeF() <= 0: font.setPointSizeF(10.0)
+            if candidate.fromString(stored):
+                font = candidate
+                loaded_stored_font = True
+        if not loaded_stored_font:
+            font.setPointSizeF(11.0)
+        elif font.pointSizeF() <= 0:
+            font.setPointSizeF(11.0)
         return font
 
     def _apply_preview_font(self) -> None:
