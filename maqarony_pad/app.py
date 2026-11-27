@@ -14,10 +14,11 @@ import re
 import shutil
 import subprocess
 import sys
+import weakref
 from datetime import datetime
 from pathlib import Path
 
-from PyQt6.QtCore import QEvent, QFileSystemWatcher, QSize, Qt, QTimer, QUrl
+from PyQt6.QtCore import QEvent, QFileSystemWatcher, QObject, QSize, Qt, QTimer, QUrl
 from PyQt6.QtGui import (
     QAction, QActionGroup, QColor, QDesktopServices, QFont, QFontDatabase,
     QIcon, QKeySequence, QPalette, QTextCharFormat, QTextCursor, QTextDocument, QTextFormat,
@@ -46,7 +47,7 @@ import editor_platform_startup as _editor_platform_startup
 from editor_platform_startup import (program_dir, project_root, asset_path, application_icon, host_process_environment, parse_args, main)
 
 APP_NAME = "MaqaronyPad"
-APP_VERSION = "1.0.2"
+APP_VERSION = "1.1.7"
 APP_ID = "maqaronypad"
 APP_ORG = "brunonlinespace"
 ORGANIZATION_DOMAIN = "github.com/brunonlinespace"
@@ -80,14 +81,81 @@ def save_json_settings(data: dict) -> None:
     save_settings(CONFIG_FILE, data)
 
 
+def documentation_path() -> Path:
+    """Return the packaged copy of the source-root README.md."""
+    candidates: list[Path] = [project_root() / "README.md"]
+
+    meipass = getattr(sys, "_MEIPASS", None)
+    if meipass:
+        candidates.append(Path(meipass) / "README.md")
+
+    if getattr(sys, "frozen", False):
+        candidates.append(Path(sys.executable).resolve().parent / "README.md")
+
+    appdir = os.environ.get("APPDIR")
+    if appdir:
+        candidates.append(Path(appdir) / "usr" / "share" / "doc" / "maqaronypad" / "README.md")
+
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    return candidates[0]
+
+
+def _system_theme_variant(app: QApplication) -> str:
+    """Resolve the host light/dark preference, with Windows as the primary target."""
+    if sys.platform == "win32":
+        try:
+            import winreg
+            key_path = r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path) as key:
+                value, _kind = winreg.QueryValueEx(key, "AppsUseLightTheme")
+            return "light" if int(value) else "dark"
+        except (OSError, TypeError, ValueError):
+            pass
+    try:
+        scheme = app.styleHints().colorScheme()
+        if scheme == Qt.ColorScheme.Dark:
+            return "dark"
+        if scheme == Qt.ColorScheme.Light:
+            return "light"
+    except (AttributeError, RuntimeError):
+        pass
+    color = app.style().standardPalette().color(QPalette.ColorRole.Window)
+    return "dark" if color.lightness() < 128 else "light"
+
 
 
 def apply_theme(app: QApplication, theme: str) -> None:
+    """Apply the established MaqaronyPad themes, with Windows scheme correction only."""
     theme = theme if theme in {"system", "dark", "light"} else "system"
     app.setStyleSheet("")
-    app.setPalette(app.style().standardPalette())
+    hints = app.styleHints()
+
     if theme == "system":
+        # System stays platform-native. Windows is the only special case: Qt
+        # does not always pick up AppsUseLightTheme correctly for a frozen app,
+        # so tell Qt which native Windows colour scheme to follow.
+        try:
+            if sys.platform == "win32":
+                resolved = _system_theme_variant(app)
+                hints.setColorScheme(Qt.ColorScheme.Dark if resolved == "dark" else Qt.ColorScheme.Light)
+            else:
+                hints.unsetColorScheme()
+        except (AttributeError, RuntimeError):
+            pass
+        app.setPalette(QPalette())
         return
+
+    # On Windows, align native controls with the explicitly selected MaqaronyPad
+    # theme. The application palette below remains the established 1.0.2 theme.
+    if sys.platform == "win32":
+        try:
+            hints.setColorScheme(Qt.ColorScheme.Dark if theme == "dark" else Qt.ColorScheme.Light)
+        except (AttributeError, RuntimeError):
+            pass
+
+    app.setPalette(app.style().standardPalette())
     palette = QPalette()
     if theme == "dark":
         palette.setColor(QPalette.ColorRole.Window, QColor("#202326"))
@@ -100,6 +168,10 @@ def apply_theme(app: QApplication, theme: str) -> None:
         palette.setColor(QPalette.ColorRole.Button, QColor("#292D31"))
         palette.setColor(QPalette.ColorRole.ButtonText, QColor("#F1F3F4"))
         palette.setColor(QPalette.ColorRole.Highlight, QColor("#158B86"))
+        try:
+            palette.setColor(QPalette.ColorRole.Accent, QColor("#158B86"))
+        except AttributeError:
+            pass
         palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
         palette.setColor(QPalette.ColorRole.PlaceholderText, QColor("#8E969E"))
     else:
@@ -121,11 +193,161 @@ def apply_theme(app: QApplication, theme: str) -> None:
         palette.setColor(QPalette.ColorRole.Dark, QColor("#767676"))
         palette.setColor(QPalette.ColorRole.Shadow, QColor("#545454"))
         palette.setColor(QPalette.ColorRole.Highlight, QColor("#0B8781"))
+        try:
+            palette.setColor(QPalette.ColorRole.Accent, QColor("#0B8781"))
+        except AttributeError:
+            pass
         palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
         palette.setColor(QPalette.ColorRole.PlaceholderText, QColor("#767676"))
         palette.setColor(QPalette.ColorRole.Link, QColor("#0068A6"))
         palette.setColor(QPalette.ColorRole.LinkVisited, QColor("#0068A6"))
     app.setPalette(palette)
+
+
+def _theme_palette_matches(app: QApplication, theme: str) -> bool:
+    """Return whether the explicit MaqaronyPad palette is still intact."""
+    if theme not in {"light", "dark"}:
+        return True
+    expected = {
+        "light": {
+            QPalette.ColorRole.Window: "#D4D4D4",
+            QPalette.ColorRole.WindowText: "#2A2A2A",
+            QPalette.ColorRole.Base: "#F4F4F4",
+            QPalette.ColorRole.Button: "#E4E4E4",
+            QPalette.ColorRole.Highlight: "#0B8781",
+        },
+        "dark": {
+            QPalette.ColorRole.Window: "#202326",
+            QPalette.ColorRole.WindowText: "#F1F3F4",
+            QPalette.ColorRole.Base: "#151719",
+            QPalette.ColorRole.Button: "#292D31",
+            QPalette.ColorRole.Highlight: "#158B86",
+        },
+    }[theme]
+    palette = app.palette()
+    for role, colour in expected.items():
+        if palette.color(role) != QColor(colour):
+            return False
+    try:
+        accent = "#0B8781" if theme == "light" else "#158B86"
+        if palette.color(QPalette.ColorRole.Accent) != QColor(accent):
+            return False
+    except AttributeError:
+        pass
+    return True
+
+
+class AppearanceThemeGuard(QObject):
+    """Reassert the selected theme while staying inert during Qt shutdown."""
+
+    def __init__(self, window) -> None:
+        super().__init__(window)
+        self._window_ref = weakref.ref(window)
+        self._queued = False
+        self._applying = False
+        self._force = False
+        self._active = True
+        self._scheme_signal_connected = False
+        self._restore_timer = QTimer(self)
+        self._restore_timer.setSingleShot(True)
+        self._restore_timer.setInterval(0)
+        self._restore_timer.timeout.connect(self._restore)
+
+        app = QApplication.instance()
+        if app is None:
+            self._active = False
+            return
+        app.installEventFilter(self)
+        app.aboutToQuit.connect(self.shutdown)
+        hints = app.styleHints()
+        if hasattr(hints, "colorSchemeChanged"):
+            hints.colorSchemeChanged.connect(self._system_scheme_changed)
+            self._scheme_signal_connected = True
+
+    def _window(self):
+        return self._window_ref() if self._window_ref is not None else None
+
+    def _system_scheme_changed(self, *_args) -> None:
+        if self._active:
+            self._schedule(force=True)
+
+    def eventFilter(self, watched, event):  # noqa: N802
+        if not self._active:
+            return False
+        window = self._window()
+        app = QApplication.instance()
+        if window is None or app is None:
+            return False
+        if (watched is window or watched is app) and event.type() in (
+            QEvent.Type.PaletteChange,
+            QEvent.Type.ApplicationPaletteChange,
+            QEvent.Type.StyleChange,
+        ):
+            self._schedule()
+        return False
+
+    def _schedule(self, force: bool = False) -> None:
+        if not self._active or self._applying:
+            return
+        window = self._window()
+        app = QApplication.instance()
+        if window is None or app is None:
+            return
+        selected = window.theme
+        if selected != "system" and not force and _theme_palette_matches(app, selected):
+            return
+        self._force |= force
+        if not self._queued:
+            self._queued = True
+            self._restore_timer.start()
+
+    def _restore(self) -> None:
+        if not self._active:
+            return
+        self._queued = False
+        force = self._force
+        self._force = False
+        if self._applying:
+            return
+        window = self._window()
+        app = QApplication.instance()
+        if window is None or app is None:
+            return
+        selected = window.theme
+        if selected != "system" and not force and _theme_palette_matches(app, selected):
+            return
+        self._applying = True
+        try:
+            apply_theme(app, selected)
+        finally:
+            self._applying = False
+
+    def shutdown(self) -> None:
+        """Detach from QApplication before SIP starts destroying Qt wrappers."""
+        if not self._active:
+            return
+        self._active = False
+        self._queued = False
+        self._force = False
+        self._restore_timer.stop()
+
+        app = QApplication.instance()
+        if app is not None:
+            try:
+                app.removeEventFilter(self)
+            except RuntimeError:
+                pass
+            if self._scheme_signal_connected:
+                try:
+                    app.styleHints().colorSchemeChanged.disconnect(self._system_scheme_changed)
+                except (AttributeError, RuntimeError, TypeError):
+                    pass
+            try:
+                app.aboutToQuit.disconnect(self.shutdown)
+            except (RuntimeError, TypeError):
+                pass
+        self._scheme_signal_connected = False
+        self._window_ref = None
 
 
 class EditorMessageStatusBar(QStatusBar):
@@ -272,7 +494,7 @@ class MaqaronyPadWindow(EditorLifecycleMixin, EditorCommandsAppearanceMixin, Edi
         # Ricopad-era preference names without losing the user's selection.
         stored_toolbar = str(self.settings.get("toolbar", self.settings.get("interface", "tabbed")))
         stored_toolbar = {"ribbon": "tabbed", "retro": "classic"}.get(stored_toolbar, stored_toolbar)
-        self.toolbar_mode = stored_toolbar if stored_toolbar in {"tabbed", "classic"} else "tabbed"
+        self.toolbar_mode = stored_toolbar if stored_toolbar in {"tabbed", "classic", "appmenu_only"} else "tabbed"
         self.settings.pop("interface", None)
         self.settings.pop("button_labels", None)
         self.settings.pop("external_editor", None)
@@ -377,6 +599,7 @@ class MaqaronyPadWindow(EditorLifecycleMixin, EditorCommandsAppearanceMixin, Edi
         self._apply_editor_appearance()
         self._update_ui_state()
         QApplication.instance().installEventFilter(self)
+        self._appearance_theme_guard = AppearanceThemeGuard(self)
 
         if initial_path:
             QTimer.singleShot(0, lambda: self.open_path(initial_path))
@@ -912,7 +1135,7 @@ class MaqaronyPadWindow(EditorLifecycleMixin, EditorCommandsAppearanceMixin, Edi
 
 
     def show_documentation(self) -> None:
-        doc = program_dir()/"docs"/"README.md"; text = doc.read_text(encoding="utf-8") if doc.is_file() else "Documentation is not installed."
+        doc = documentation_path(); text = doc.read_text(encoding="utf-8") if doc.is_file() else "Documentation is not installed."
         dialog = QDialog(self); dialog.setWindowTitle(dialog_title("Documentation")); dialog.setWindowIcon(self.windowIcon()); dialog.resize(760, 620)
         layout = QVBoxLayout(dialog); view = MarkdownPreview(dialog); view.set_document_path(str(doc) if doc.is_file() else None); view.render_markdown(text); layout.addWidget(view)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close, dialog); buttons.rejected.connect(dialog.reject); layout.addWidget(buttons); dialog.exec()
