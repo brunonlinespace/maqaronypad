@@ -14,7 +14,7 @@
 
 MaqaronyPad is a focused standalone Markdown editor built around an authoritative Markdown source editor and a read-only rendered preview. It reads and writes ordinary Markdown files directly, without introducing a private document format or workspace database.
 
-Current release: **1.0.2**
+Current release: **1.1.7**
 
 Repository: <https://github.com/brunonlinespace/maqaronypad>
 
@@ -32,8 +32,8 @@ MaqaronyPad deliberately does not expose a generic plain-text compatibility mode
 
 - Native **Markdown source editing and read-only preview**.
 - Three persistent document layouts: **Source Only**, **Source + Preview**, and **Preview Only**.
-- **Modern** six-tab toolbar plus a fully customisable **Classic** toolbar.
-- Persistent native/global **AppMenu** available in both toolbar modes.
+- **Modern** six-tab toolbar plus a fully customisable **Classic** toolbar and an explicit **Disabled (AppMenu only)** mode.
+- **Modern** hides the local AppMenu while preserving compatible desktop global-menu export; **Classic** and **Disabled (AppMenu only)** keep the local AppMenu visible.
 - Markdown headings, emphasis, lists, task lists, quotes, inline/fenced code, links, image references, tables, horizontal rules, symbols, and date/time insertion.
 - Smart **Paste** that converts rich/HTML clipboard content to Markdown, plus **Paste as Plain Text**.
 - Bottom **Find / Replace** panel with bounded search results, next/previous navigation, Replace and Replace All.
@@ -43,7 +43,7 @@ MaqaronyPad deliberately does not expose a generic plain-text compatibility mode
 - Atomic Markdown saving, external-change detection, and protection when the active backing file is deleted or renamed away.
 - Source/Preview-aware Copy and Select All behavior in Split mode, with source-mutating commands protected while Preview owns interaction focus.
 - System, Dark, and Light application themes with independent editor-canvas control.
-- Searchable **Keyboard Shortcuts**, persistent **Quick Tour**, bundled documentation, GitHub and issue links.
+- Searchable **Keyboard Shortcuts**, persistent **Quick Tour**, root-README documentation, GitHub and issue links.
 - Four selectable command-icon families with light and dark variants.
 
 ## Interface
@@ -69,23 +69,26 @@ Use **Ctrl+Tab** and **Ctrl+Shift+Tab** to move between Modern toolbar tabs. Dou
 
 Classic uses the same application actions in one traditional customisable toolbar.
 
-Its catalogue follows AppMenu order. Every Classic item is removable, so the toolbar may be completely empty; the permanent AppMenu remains the recovery and control surface.
+Its catalogue follows AppMenu order. **Classic Settings...** includes **Clear All** for optional commands, while the Classic Settings control itself remains permanently available on the Classic bar so the toolbar cannot be made completely unusable through customisation.
 
-The **Editor Toolbar** flyout is available from both Modern and Classic and contains:
+The **Editor Toolbar** flyout contains:
 
 - **Modern (default)**
 - **Classic**
-- **Customise Classic Bar…**
+- **Classic Settings...**
+- **Disabled (AppMenu only)**
+
+**Disabled (AppMenu only)** hides both toolbar command surfaces while leaving the AppMenu available locally and to compatible desktop global-menu integration.
 
 `Ctrl+Alt+Shift+T` independently flips between Modern and Classic.
 
 ### AppMenu
 
-The native application menu remains available in both toolbar modes and follows the canonical:
+MaqaronyPad keeps one native application menu as the menu authority. In **Modern**, the local AppMenu is hidden while the same menu objects remain intact so compatible desktop global-menu integration can remain available; on systems without a global menu, Modern intentionally has no local AppMenu. In **Classic** and **Disabled (AppMenu only)**, the local AppMenu remains visible whether or not the desktop also exposes a global menu.
+
+The canonical menu model remains:
 
 **File → Edit → Markdown → Insert → View → Settings → Help**
-
-command model.
 
 The Keyboard Shortcuts dialog inventories the live application actions from this menu structure, so assigned menu shortcuts remain visible without maintaining a separate duplicate list.
 
@@ -235,10 +238,10 @@ It is intentionally non-privileged: it does not install host packages or invoke 
 Expected outputs include:
 
 ```text
-maqarony_pad/dist/MaqaronyPad-1.0.0-x14.4-x86_64.AppImage
-maqarony_pad/dist/MaqaronyPad-1.0.0-x14.4-x86_64.AppImage.sha256
-maqarony_pad/dist/MaqaronyPad-1.0.0-x14.4-x86_64.build-info.txt
-maqarony_pad/dist/MaqaronyPad-1.0.0-x14.4-x86_64.build-python-lock.txt
+maqarony_pad/dist/MaqaronyPad-1.1.7-x86_64.AppImage
+maqarony_pad/dist/MaqaronyPad-1.1.7-x86_64.AppImage.sha256
+maqarony_pad/dist/MaqaronyPad-1.1.7-x86_64.build-info.txt
+maqarony_pad/dist/MaqaronyPad-1.1.7-x86_64.build-python-lock.txt
 ```
 
 A finished AppImage can additionally be exercised with:
@@ -246,6 +249,25 @@ A finished AppImage can additionally be exercised with:
 ```bash
 ./maqarony_pad/packaging/fedora/test-appimage.sh
 ```
+
+## Building the Windows portable application
+
+On Windows, run the included PowerShell builder with Python 3 available through the `py` launcher:
+
+```powershell
+.\maqarony_pad\packaging\windows\build-windows-portable.ps1
+```
+
+The builder creates an isolated environment and produces an **onedir portable Windows application** under:
+
+```text
+maqarony_pad\dist\MaqaronyPad-1.1.7-windows-portable\
+    maqaronypad.exe
+    README.md
+    _internal\
+```
+
+This is a portable Windows build, not an installer. It does not install file associations or write Windows registry entries.
 
 ## Validation
 
