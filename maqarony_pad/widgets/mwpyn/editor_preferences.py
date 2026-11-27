@@ -20,6 +20,7 @@ class EditorPreferencesMixin:
         self.editor.set_tab_width_spaces(int(self.settings.get("tab_width", 4)))
         self.tabbed_mode_action.setChecked(self.toolbar_mode == "tabbed")
         self.classic_mode_action.setChecked(self.toolbar_mode == "classic")
+        self.appmenu_only_mode_action.setChecked(self.toolbar_mode == "appmenu_only")
         self.editor_canvas_theme_action.setChecked(not self.editor_canvas_light)
         self.drop_active_action.setChecked(self.drop_open_mode == "active_window")
         self.drop_new_window_action.setChecked(self.drop_open_mode == "new_window")
