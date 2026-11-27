@@ -93,4 +93,4 @@ needle.comparators=[ast.Constant(value='1.0.0')]
 wrong_ns=dict(ns)
 exec(compile(ast.fix_missing_locations(ast.Module(body=[wrong],type_ignores=[])),str(ROOT/'app.py'),'exec'),wrong_ns)
 assert wrong_ns['smoke_test']('system')==3, "Historical hard-coded version defect was not reproduced"
-print('PASS 1.0.2 real smoke-test logic: 3 themes, 4 icon families, version mismatch and stale-literal rejection')
+print('PASS 1.1.0 real smoke-test logic: 3 themes, 4 icon families, version mismatch and stale-literal rejection')

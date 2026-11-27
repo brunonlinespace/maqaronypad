@@ -48,9 +48,9 @@ with tempfile.TemporaryDirectory(prefix='maqapad-builder-metadata-') as d:
     # The original x17.8 regression: current version absent from release history.
     metadata = fixture/meta_name
     good = metadata.read_text(encoding='utf8')
-    assert '<release version="1.0.2"' in good
-    metadata.write_text(good.replace('<release version="1.0.2"',
-                                     '<release version="1.0.2-absent"', 1), encoding='utf8')
+    assert '<release version="1.1.7"' in good
+    metadata.write_text(good.replace('<release version="1.1.7"',
+                                     '<release version="1.1.7-absent"', 1), encoding='utf8')
     invoke(checks,fixture,must_pass=False)
     metadata.write_text(good,encoding='utf8')
     # Reproduce the exact Fedora failure: final 1.0.0 followed by x17.10.
@@ -99,4 +99,4 @@ with tempfile.TemporaryDirectory(prefix='maqapad-builder-metadata-') as d:
     assert (appdir/'usr/share/applications/maqaronypad.desktop').read_bytes() == (payload/'maqaronypad.desktop').read_bytes()
     assert (appdir/'AppRun').is_file()
 
-print('PASS 1.0.2 actual builder metadata preflight, AppStream negative-order cases, native-validator failure and AppDir assembly')
+print('PASS 1.1.7 actual builder metadata preflight, AppStream negative-order cases, native-validator failure and AppDir assembly')
