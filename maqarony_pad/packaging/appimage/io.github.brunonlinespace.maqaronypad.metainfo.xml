@@ -16,6 +16,9 @@
   <launchable type="desktop-id">maqaronypad.desktop</launchable>
   <provides><mediatype>text/markdown</mediatype></provides>
   <releases>
+    <release version="1.1.7" date="2026-11-27"><description><p>Detach the runtime appearance guard cleanly before Qt application shutdown to prevent a PyQt/SIP teardown crash while preserving the accepted live theme behavior.</p></description></release>
+    <release version="1.1.6" date="2026-11-27"><description><p>Correct Windows theme handling and shell colours, set Source/Preview defaults to 11 pt, add Disabled (AppMenu only) and Classic Settings behavior, and clean/flatten the Windows portable build.</p></description></release>
+    <release version="1.1.0" date="2026-11-26"><description><p>Align Modern and Classic local AppMenu presentation, use the root README as Documentation, and correct the Windows portable version validation.</p></description></release>
     <release version="1.0.2" date="2026-11-01"><description><p>Correct the final AppImage smoke test version assertion and enforce a runtime-version parity regression; editor behavior unchanged.</p></description></release>
     <release version="1.0.1" date="2026-11-01"><description><p>Correct final-release AppStream metadata ordering and enforce strict metadata validation before freezing; application functionality unchanged.</p></description></release>
     <release version="1.0.0" date="2026-11-01"><description><p>Promote validated 1.0.0-x17.10 source to final 1.0.0 without application behavior changes.</p></description></release>

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 APPIMAGE="${1:-}"
-[[ -f "$APPIMAGE" ]] || { echo "Usage: $0 MaqaronyPad-1.0.2-ARCH.AppImage" >&2; exit 2; }
+[[ -f "$APPIMAGE" ]] || { echo "Usage: $0 MaqaronyPad-1.1.7-ARCH.AppImage" >&2; exit 2; }
 [[ -x "$APPIMAGE" ]] || chmod +x "$APPIMAGE"
 ROOT="$(mktemp -d)"
 trap 'rm -rf "$ROOT"' EXIT
@@ -15,7 +15,7 @@ COMMON_ENV=(
   QT_QUICK_BACKEND=software
 )
 actual="$(env "${COMMON_ENV[@]}" "$APPIMAGE" --appimage-extract-and-run --version)"
-[[ "$actual" == "MaqaronyPad 1.0.2" ]] || { echo "Version probe mismatch: $actual" >&2; exit 1; }
+[[ "$actual" == "MaqaronyPad 1.1.7" ]] || { echo "Version probe mismatch: $actual" >&2; exit 1; }
 for theme in system dark light; do
   timeout 30s env "${COMMON_ENV[@]}" "$APPIMAGE" --appimage-extract-and-run --theme "$theme" --maqaronypad-smoke-test
 done

@@ -3,6 +3,7 @@
 - `fedora/build-appimage.sh` — non-privileged Fedora 43/44 AppImage builder.
 - `fedora/test-appimage.sh` — FUSE-independent finished-AppImage version/theme probes.
 - `pyinstaller/build-requirements.txt` — isolated build dependencies.
+- `windows/` — Windows onedir portable builder, version metadata, and build notes.
 - `appimage/` — desktop/AppStream/AppRun payload.
 
 The Fedora builder never installs host packages or invokes privilege elevation. Python build dependencies are installed only into the isolated build virtual environment.

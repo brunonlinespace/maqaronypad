@@ -8,7 +8,7 @@ umask 022
 
 APP_NAME="MaqaronyPad"
 APP_ID="maqaronypad"
-APP_VERSION="1.0.2"
+APP_VERSION="1.1.7"
 SUITE_DESKTOP_ID="maqaronypad"
 APPSTREAM_ID="io.github.brunonlinespace.maqaronypad"
 
@@ -258,7 +258,7 @@ WRAP
   install -m 0644 "$PROGRAM_ROOT/assets/icons/maqaronypad.png" "$APPDIR/usr/share/icons/hicolor/512x512/apps/maqaronypad.png"
   install -m 0644 "$APPIMAGE_PAYLOAD/${APPSTREAM_ID}.metainfo.xml" "$APPDIR/usr/share/metainfo/${APPSTREAM_ID}.metainfo.xml"
   install -m 0644 "$PROGRAM_ROOT/LICENSE" "$APPDIR/usr/share/doc/maqaronypad/LICENSE"
-  install -m 0644 "$PROGRAM_ROOT/README.md" "$APPDIR/usr/share/doc/maqaronypad/README.md"
+  install -m 0644 "$PROJECT_ROOT/README.md" "$APPDIR/usr/share/doc/maqaronypad/README.md"
   ln -s "usr/share/applications/$SUITE_DESKTOP_ID.desktop" "$APPDIR/$SUITE_DESKTOP_ID.desktop"
   ln -s "usr/share/icons/hicolor/512x512/apps/maqaronypad.png" "$APPDIR/maqaronypad.png"
   ln -s maqaronypad.png "$APPDIR/.DirIcon"
